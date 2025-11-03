@@ -1,0 +1,14 @@
+[
+{
+    "model": "tasks.task",
+    "pk": 1,
+    "fields": {
+        "name": "Hacer prototipo de API",
+        "description": "Hacer un prototipo de API para el alta, modificación y cierre de tareas. La librería [FastAPI](https://fastapi.tiangolo.com/) parece interesante",
+        "slug": "make-api",
+        "completed": false,
+        "created_at": "2025-11-03T22:59:25.193Z",
+        "updated_at": "2025-11-03T22:59:25.193Z"
+    }
+}
+]
