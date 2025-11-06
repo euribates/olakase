@@ -1,0 +1,27 @@
+{% load static %}<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block styles %}
+    <link href="{% static 'tasks/css/bootstrap.css' %}" rel="stylesheet">
+    {% endblock styles %}
+    <title> {{ title }} </title>
+  </head>
+  <body>
+    {% include "tasks/includes/header.html" %}    
+
+    {% block content %}
+
+    <h1>Hello, world!</h1>
+        
+
+    {% endblock content %}
+
+    {% block javascript %}
+    <script src="{% static 'tasks/js/bootstrap.js' %}"></script>
+    {% endblock javascript %}
+
+  </body>
+</html>

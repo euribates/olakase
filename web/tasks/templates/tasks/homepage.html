@@ -1,0 +1,24 @@
+{% extends "tasks/base.html" %}
+
+{% block content %}
+  
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id. Tarea</th>
+            <th>Nombre / descripción</th>
+
+        </tr>
+    </thead>  
+  <tbody>
+    {% for task in tasks.all %}<tr>
+        <th>{{ task.pk }}</th>  
+        <td>
+            <b>{{ task.name }}</b><br>
+            {{ task.desciption }}
+        </td>
+    </tr>{% endfor %}  
+  </tbody>
+</table>
+
+{% endblock content %}
