@@ -1,0 +1,55 @@
+.title {
+  z-index:500;
+  width: 100%;
+  background: #246196;
+  background: linear-gradient(180deg,rgba(36, 97, 150, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  border-bottom: 2px solid #222288;
+  font-size: 120%;
+
+  }
+
+blockquote {
+  background-color: #f0f0f099;
+  border-left: 4px solid lime;
+  text-align: left;
+  padding: 16px!important;
+}
+
+.container {
+  display: flex;
+  min-height: 500px;
+}
+
+.col{
+  flex: 1;
+  font-size: 85%;
+}
+
+
+.full {
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+  margin-left: 6%;
+  margin-right: 6%;
+  text-align: center;
+  justify-content: center;
+}
+
+.desventaja {
+  color: red;
+}
+
+.ventaja {
+  color: green;
+}
+
+.pie {
+  font-size: 75%;
+  border-top: 2px solid silver;
+}
+
+.link {
+  font-size: 12pt;
+  font-family: monospace;
+}

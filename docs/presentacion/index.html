@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   
+   <title>Migraciones con Django - Un ejemplo práctico</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
+
+   <link rel="stylesheet" href="dist/reset.css">
+   <link rel="stylesheet" href="dist/reveal.css">
+   <link rel="stylesheet" href="dist/theme/beige.css">
+   
+   <!-- Theme used for syntax highlighted code -->
+   <link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+</head>
+  <body>
+    <div class="reveal">
+
+     <div class="slides">
+
+      <section data-background-image="slide-definicion.svg">
+      </section>
+
+      <section>
+        <h3>OTROS TIPOS DE MIGRACIONES</h3>
+        <h4>Que no veremos aquí</h4>
+        <ul>
+          <li>De PHP a Python</li>
+          <li>De API v2 a API v3</li>
+          <li>De Django 4 a Django 5</li>
+          <li>De Django a FastAPI</li>
+          <li>De PostgresSQL 16 a PostgreSQL 17</li>
+          <li>
+            La migración del salmón Rojo, de <i>homo habilis</i>
+          a <i>homo erectus</i>, etc.</li>
+        </ul>
+      </section>
+      
+      <section>
+        <h3>
+          ¿Cómo se pasa del fichero de migración</h3>
+        <h4>
+        a cambiar el esquema de la base de datos?
+        </h4>
+
+        <img class="r-stretch" src="img/is-this-magic.jpg" alt="Wait, is this magic?"/>
+      </section>
+
+      <section>
+        <h2>sqlmigrate</h2>
+        <pre>
+        ./manage.py sqlmigrate tasks 0001
+        </pre>
+
+      </section>
+
+      <section>
+        <pre>
+BEGIN;
+--
+-- Create model Task
+--
+CREATE TABLE "tasks_task" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+"name" varchar(200) NOT NULL, "description" text NOT NULL, "slug" varchar(50)
+NOT NULL UNIQUE, "completed" bool NOT NULL, "created_at" datetime NOT NULL,
+"updated_at" datetime NOT NULL);
+COMMIT;
+        
+        </pre>
+      </section>
+
+      <section>
+        <h2>Gracias por su atención</h2>
+        
+        <p>Preguntas, críticas, sugerencias, ideas, etc.<br>
+        son todas bienvenidas
+        </p>
+
+      </section>
+      
+      
+      
+
+
+     </div>
+    </div>
+    
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+    // More info about initialization & config:
+     // - https://revealjs.com/initialization/
+     // - https://revealjs.com/config/
+     Reveal.initialize({
+        hash: true,
+        width: 1280,
+        height: 720,
+    
+    // Learn about plugins: https://revealjs.com/plugins/
+    plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+    });
+    </script>
+  </body>
+</html>
