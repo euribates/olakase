@@ -5,26 +5,38 @@
 **Ola K Ase** es un gestor de tareas, pensado como proyecto didáctico
 para la enseñanza de Django
 
-## Modelos
-
-Dado que el proyecto es un gestor de tareas
-Vamos a trabajar sobre todo con el modelo `tasks.Task`,
-que se describe inicialmente así:
+- [Software previo recomendable](docs/software.md)
 
 
-```python
-class Task(models.Model):
+## Instalación
 
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    slug = models.SlugField(unique=True)
-    completed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+- Crear el entorno virtual para el proyecto
 
-    def __str__(self):
-        return self.name
-```
+    Si usamos `uv`:
+        
+        ```
+        uv venv
+        ```
+
+    Si no queremos usar `uv`, podemos usar el módulo `venv`, que
+    está disponible desde la versión 3.3.
+
+        ```
+        python -m venv .venv
+        ```
+
+    De cualquiera de las dos manerar, tenemos que tener un entorno
+    virtual en la carpeta `.venv`, que podemos activar
+    con:
+
+        ```
+        source .venv/bin/activate
+        ```
+
+## Documentación
+
+- [Modelos](docs/models.md)
+
 
 ## Guión
 
