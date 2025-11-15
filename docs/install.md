@@ -108,3 +108,17 @@ just startup
 ### Paso 6: Ejecutar el servidor de desarrollo
 
 Por  último, para poder arrancar el servidor en modo desarrollo, y comprobar
+que podemos acceder con un navegador a <http://localhost:8000/>, haremos:
+
+Si usas `just`:
+
+```
+just rundev
+```
+
+Si no:
+
+```
+python manage.py collectstatic --no-input
+python manage.py runserver 0.0.0.0:8000
+```
