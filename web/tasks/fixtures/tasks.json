@@ -10,5 +10,29 @@
         "created_at": "2025-11-03T22:59:25.193Z",
         "updated_at": "2025-11-03T22:59:25.193Z"
     }
+},
+{
+    "model": "tasks.task",
+    "pk": 2,
+    "fields": {
+        "name": "Aprender Python",
+        "description": "Leer la guía de [Aprender python](https://aprendepython.es/), que tiene buena pinta",
+        "slug": "aprender-python",
+        "completed": false,
+        "created_at": "2025-11-15T12:32:57.360Z",
+        "updated_at": "2025-11-15T12:32:57.360Z"
+    }
+},
+{
+    "model": "tasks.task",
+    "pk": 3,
+    "fields": {
+        "name": "Aprender Django",
+        "description": "El tutorial de [Django Girls](https://djangogirls.org/es/) parece un buen punto para empezar",
+        "slug": "aprender-django",
+        "completed": false,
+        "created_at": "2025-11-15T12:35:22.735Z",
+        "updated_at": "2025-11-15T12:35:22.735Z"
+    }
 }
 ]

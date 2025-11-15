@@ -2,6 +2,12 @@ set export
 
 DATABASE := "default"
 
+
+# Ejecutar un run server en modo desarrollo
+rundev: check static 
+    python ./manage.py runserver 0.0.0.0:8000 
+
+
 # Abrir una shell de python/Django
 shell:
     python ./manage.py shell_plus
@@ -50,11 +56,6 @@ check:
 # Ejecutar django collectstatic
 static:
     python ./manage.py collectstatic --no-input
-
-
-# Ejecutar un run server en modo desarrollo
-rundev: check static 
-    python ./manage.py runserver 0.0.0.0:8800 
 
 
 # Borrar ficheros compilados de python
