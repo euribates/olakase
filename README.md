@@ -7,31 +7,8 @@ para la enseñanza de Django
 
 - [Software previo recomendable](docs/software.md)
 
+- [Instalación del proyecto](docs/install.md)
 
-## Instalación
-
-- Crear el entorno virtual para el proyecto
-
-    Si usamos `uv`:
-        
-        ```
-        uv venv
-        ```
-
-    Si no queremos usar `uv`, podemos usar el módulo `venv`, que
-    está disponible desde la versión 3.3.
-
-        ```
-        python -m venv .venv
-        ```
-
-    De cualquiera de las dos manerar, tenemos que tener un entorno
-    virtual en la carpeta `.venv`, que podemos activar
-    con:
-
-        ```
-        source .venv/bin/activate
-        ```
 
 ## Documentación
 
