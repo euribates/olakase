@@ -101,3 +101,9 @@ tags:
 # Buscar con pss pero omitiendo directorios .venv y migrations
 pss  *args='':
     pss {{args}} --ignore-dir .venv --ignore-dir migrations
+
+
+startup:
+    python manage.py check
+    python manage.py migrate
+    python manage.py loaddata tasks/fixtures/tasks.json
