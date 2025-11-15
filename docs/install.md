@@ -1,17 +1,21 @@
 ## Instalación del proyecto
 
+### Paso 1: Clonar el repositorio del proyecto
+
 El primer paso sera descargar el código fuente desde el repositorio:
 
 ```shell
 git clone https://github.com/euribates/olakase
 ```
 
-Esto nos creara la carpeta olakease, a la que tenemos que entrar
+Esto nos creá la carpeta `olakease`, a la que tenemos que entrar
 con:
 
 ```shell
 cd olakease
 ```
+
+### Paso 2: Crear un entorno virtual
 
 El segundo paso es crear el entorno virtual para el proyecto
 
@@ -35,3 +39,72 @@ con:
 ```
 source .venv/bin/activate
 ```
+
+### Paso 3: Instalar Django y el resto de dependencias
+
+Los requerimientos están en `[requirements.txt](../requirements.txt)`.
+De nuevo, podemos hacerlo usando uv`:
+
+```
+uv pip install -r requirements.txt
+```
+
+O directamente con python:
+
+```
+python -m pip install -r requirements.txt
+```
+
+### Paso 4: Comprobar que todo está correctamente instalado
+
+Primero, nos pasamos al directorio `web`, que es donde esta el servidor web
+del proyecto:
+
+```
+cd web
+```
+
+Una vez aquí, podemos usar realizar una serie de comprobaciones para ver que
+todo esté corectamente instalado:
+
+```
+python manage.py check
+```
+
+Debería imprimir algo como esto:
+
+```
+System check identified no issues (0 silenced).
+```
+
+Si tenemos `just`, podemos hacer:
+
+```
+just check
+```
+
+### Paso 5: EJecutar migraciones iniciales
+
+Si todo ha ido bien,  podemos ejecutar:
+
+```
+python manage.py migrate
+```
+
+Para crear la base de datos y realizar las migraciones iniciales, seguido de:
+
+```
+python manage.py loaddata tasks/fixtures/tasks.json
+```
+
+Para tener en la base de datos algunas tareas con las que podamos jugar.
+
+Si usamos `just`, los pasos 3, 4, 5 podemos realizarlos con la orden:
+
+```
+just startup
+```
+
+### Paso 6: Ejecutar el servidor de desarrollo
+
+Por  último, para poder arrancar el servidor en modo desarrollo, y comprobar
