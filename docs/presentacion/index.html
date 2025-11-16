@@ -13,10 +13,13 @@
 
    <link rel="stylesheet" href="dist/reset.css">
    <link rel="stylesheet" href="dist/reveal.css">
-   <link rel="stylesheet" href="dist/theme/beige.css">
+   <link rel="stylesheet" href="dist/theme/solarized.css">
    
    <!-- Theme used for syntax highlighted code -->
    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+   <!-- custom CSS -->
+   <link rel="stylesheet" href="css/custom.css">
 
 </head>
   <body>
@@ -24,12 +27,14 @@
 
      <div class="slides">
 
-      <section data-background-image="slide-definicion.svg">
+      <section>
+        <img src="img/slice-definition.png" alt=""/>
       </section>
 
       <section>
-        <h3>OTROS TIPOS DE MIGRACIONES</h3>
-        <h4>Que no veremos aquí</h4>
+        <h3>OTROS TIPOS DE MIGRACIONES<br>
+          <small>Que no veremos aquí</small>
+        </h3>
         <ul>
           <li>De PHP a Python</li>
           <li>De API v2 a API v3</li>
@@ -42,6 +47,305 @@
         </ul>
       </section>
       
+      <section>
+        <h3>Qué veremos</h3>
+        <ul>
+          <li class="fragment grow fade-up">Qué son las migraciones</li>
+          <li class="fragment grow fade-up">Instalación del proyecto</li>
+          <li class="fragment grow fade-up">Migraciones automáticas</li>
+          <li class="fragment grow fade-up">Migraciones manuales usando SQL
+          <li class="fragment grow fade-up">Migraciones manuales Usando Python</li>
+          <li class="fragment grow fade-up">Recomendaciones y consejos</li>
+        </ul>
+ </section>
+
+      <section>
+        <h3>Migración</h3>
+        <p>
+        
+Operación que consiste en aplicar 
+        <b class="fragment highlight-current-red">cambios en el esquema</b>
+        de la base de datos, llevando un 
+        <b class="fragment highlight-current-red">registro</b> de las operaciones realizadas,
+        con el objetivo de que los modelos de Django
+        permanezcan <b class="fragment highlight-current-red">sincronizados</b>
+        con la base de datos.        
+        </p>
+      </section>
+
+      <section data-markdown>
+        ### Preparativos
+
+        Vamos a trabajar sobre un proyecto simple, un gestor
+        de tareas, inicialmente con un único modelo, `Task`.
+
+        Sobre este proyecto, simularemos varios problemas
+        que podemos encontrar en la evolución
+        de un proyecto.
+
+        La gente de marketing ha decidido que el nombre 
+        del proyecto sea...
+
+      </section>
+
+      <section>
+        <img src="../logo-olakase.png" alt="Logo Ola K Ase"/>
+      </section>
+
+      <section><! -- vertical track -->
+
+        <section data-markdown>
+        ### Pasos para replicar el proyecto
+
+        - Clonar el repositorio del proyecto
+        - Crear un entorno virtual
+        - Instalar Django y el resto de dependencias
+        - Comprobar que todo está correctamente instalado
+        - Ejecutar migraciones iniciales
+        </section>
+
+        <section data-markdown>
+          #### Paso 1: Clonar el repositorio del proyecto
+
+          ```shell
+          git clone https://github.com/euribates/olakase
+          ```
+
+        </section>
+
+        <section data-markdown>
+          #### Paso 2: Crear un entorno virtual
+
+          Con uv:
+
+          ```shell
+          uv venv
+          ```
+
+          Si no queremos usar `uv`, podemos usar el módulo `venv`, que
+          está disponible desde la versión 3.3 de Python.
+
+          ```shell
+          python -m venv .venv
+      <section>
+        <h4>tasks.models::Task</h4>
+          <pre><code data-trim data-noescape>
+
+class Task(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    slug = models.SlugField(unique=True)
+    completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+          </code></pre>
+      </section>
+
+          ```
+
+          Tenemos que acabar teniendo
+          un entorno virtual en la carpeta `.venv`, que podemos
+          activar con `source .venv/bin/activate`.
+
+        </section>
+
+        <section data-markdown>
+
+#### Paso 3: Instalar Django y el resto de dependencias
+
+Los requerimientos están en el fichero `requirements.txt`.
+
+De nuevo, podemos hacerlo usando `uv`:
+
+```
+uv pip install -r requirements.txt
+```
+
+O si no queremos usarlo:
+
+```
+python -m pip install -r requirements.txt
+```
+
+        </section>
+
+        <section data-markdown>
+
+
+### Paso 4: Comprobar que todo está correctamente instalado
+
+Nos pasamos al directorio `web`, que es 
+donde está el servidor web del proyecto:
+
+```shell
+cd web
+```
+
+Una vez aquí, podemos realizar una serie de comprobaciones
+para ver que todo esté correctamente instalado:
+
+```shell
+python manage.py check
+```
+
+        </section>
+
+
+        <section data-markdown>
+
+Debería imprimir algo como esto:
+
+```shell
+System check identified no issues (0 silenced).
+```
+
+Si tenemos `just`, podemos hacer:
+
+```shell
+just check
+```
+      <section>
+        <h4>tasks.models::Task</h4>
+          <pre><code data-trim data-noescape>
+
+class Task(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    slug = models.SlugField(unique=True)
+    completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+          </code></pre>
+      </section>
+
+          
+        </section>
+
+        <section data-markdown>
+
+#### Paso 5: Ejecutar migraciones iniciales
+
+Si todo ha ido bien,  podemos ejecutar:
+
+```shell
+python manage.py migrate
+```
+
+Para crear la base de datos y realizar las migraciones iniciales, seguido de:
+
+```shell
+python manage.py loaddata tasks/fixtures/tasks.json
+```
+
+Para tener en la base de datos algunas tareas con las que podamos jugar.
+
+          
+        </section>
+
+        <section data-markdown>
+
+Si usamos `just`, los pasos 3, 4, 5 podemos realizarlos con la orden:
+
+```shell
+just startup
+```
+        </section>
+
+        <section data-markdown>
+
+### Paso 6: Ejecutar el servidor de desarrollo
+          
+Por  último, arrancar el servidor en modo desarrollo, y
+comprobar que podemos acceder con un navegador
+a <http://localhost:8000/>, haremos:
+
+```shell
+python manage.py collectstatic --no-input
+python manage.py runserver 0.0.0.0:8000
+```
+
+Usando `just`:
+
+```shell
+just rundev
+```
+
+        </section>
+
+        <section data-markdown>
+          #### Todo junto (Usando `uv`)
+          
+          ```shell
+          git clone https://github.com/euribates/olakase
+          cd olakease
+          uv venv
+          source .venv/bin/activate
+          uv pip install -r requirements.txt
+          cd web
+          python manage.py check
+          python manage.py migrate
+          python manage.py loaddata tasks/fixtures/tasks.json
+          python manage.py collectstatic --no-input
+          python manage.py runserver 0.0.0.0:8000
+          ```
+
+        </section>  
+      </section><!-- Fin de vertical column -->
+
+      <section>
+        <h4>tasks.models::Task</h4>
+
+          <pre><code data-trim data-noescape>
+
+class Task(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    slug = models.SlugField(unique=True)
+    completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+          </code></pre>
+      </section>
+
+      <section>
+
+        <h3>migrate</h3>
+
+        <p>En los pasos anteriores, ejecutamos el comando
+        <code>migrate</code></p>
+
+        <p class="fragment fade-in">¿Qué hace esta orden?</p>
+
+        <p class="fragment fade-in">Ejecuta todas las migraciones
+        que hubiera pendientes de aplicar.
+        Si no hay ninguna, no hace nada.
+        </p>
+
+      </section>
+
+      <section data-markdown>
+
+## Atención, pregunta
+### ¿Como es que tenemos migraciones, si no hemos hecho nada?
+
+Una migración es un cambio en la base de datos, en el 
+sentido que refleja las **diferencias** entre lo que
+tenemos en nuestro `models` y la realidad de la base de datos.
+
+      </section>
+
       <section>
         <h2>¿Qué hace makemigrations?<h2>
 
@@ -58,6 +362,10 @@
         ficheros en Python
         </h3>
 
+      </section>
+
+      <section>
+        <img src="img/slide-makemigrations.png" alt=""/>
       </section>
 
       <section>
@@ -93,6 +401,35 @@ COMMIT;
         </pre>
       </section>
 
+      <section data-auto-animate>
+        <pre data-id="code-urgent"><code data-trim data-noescape data-line-numbers>
+
+class Task(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    slug = models.SlugField(unique=True)
+    completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+        </code></pre>
+      </section>
+
+      <section data-auto-animate>
+        <pre data-id="code-urgent"><code data-trim data-noescape data-line-numbers>
+
+class Task(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    slug = models.SlugField(unique=True)
+    urgent = models.BooelanField(default=False)
+    completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+        </code></pre>
+      </section>
+
       <section>
         <h2>Gracias por su atención</h2>
         
@@ -113,6 +450,7 @@ COMMIT;
     <script src="plugin/notes/notes.js"></script>
     <script src="plugin/markdown/markdown.js"></script>
     <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
     <script>
     // More info about initialization & config:
      // - https://revealjs.com/initialization/
@@ -125,7 +463,12 @@ COMMIT;
         height: 720,
     
     // Learn about plugins: https://revealjs.com/plugins/
-    plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+    plugins: [ 
+      RevealMarkdown,
+      RevealHighlight,
+      RevealNotes,
+      RevealZoom,
+      ],
     });
     </script>
   </body>

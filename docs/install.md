@@ -42,14 +42,16 @@ source .venv/bin/activate
 
 ### Paso 3: Instalar Django y el resto de dependencias
 
-Los requerimientos están en `[requirements.txt](../requirements.txt)`.
-De nuevo, podemos hacerlo usando uv`:
+Los requerimientos están en
+`[requirements.txt](../requirements.txt)`.
+
+De nuevo, podemos hacerlo usando `uv`:
 
 ```
 uv pip install -r requirements.txt
 ```
 
-O directamente con python:
+O si no queremos usarlo:
 
 ```
 python -m pip install -r requirements.txt
@@ -57,15 +59,15 @@ python -m pip install -r requirements.txt
 
 ### Paso 4: Comprobar que todo está correctamente instalado
 
-Primero, nos pasamos al directorio `web`, que es donde esta el servidor web
-del proyecto:
+Primero, nos pasamos al directorio `web`, que es donde está
+el servidor web del proyecto:
 
 ```
 cd web
 ```
 
-Una vez aquí, podemos usar realizar una serie de comprobaciones para ver que
-todo esté corectamente instalado:
+Una vez aquí, podemos realizar una serie de comprobaciones
+para ver que todo esté correctamente instalado:
 
 ```
 python manage.py check
@@ -83,7 +85,7 @@ Si tenemos `just`, podemos hacer:
 just check
 ```
 
-### Paso 5: EJecutar migraciones iniciales
+### Paso 5: Ejecutar migraciones iniciales
 
 Si todo ha ido bien,  podemos ejecutar:
 
@@ -107,8 +109,9 @@ just startup
 
 ### Paso 6: Ejecutar el servidor de desarrollo
 
-Por  último, para poder arrancar el servidor en modo desarrollo, y comprobar
-que podemos acceder con un navegador a <http://localhost:8000/>, haremos:
+Por  último, arrancar el servidor en modo desarrollo, y
+comprobar que podemos acceder con un navegador
+a <http://localhost:8000/>, haremos:
 
 Si usas `just`:
 
