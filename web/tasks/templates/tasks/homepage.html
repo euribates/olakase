@@ -2,11 +2,13 @@
 
 {% block content %}
   
+
 <table class="table">
     <thead>
         <tr>
             <th>Id. Tarea</th>
-            <th>Nombre / descripción</th>
+            <th>Nombre</th>
+            <th>descripción</th>
 
         </tr>
     </thead>  
@@ -14,11 +16,22 @@
     {% for task in tasks.all %}<tr>
         <th>{{ task.pk }}</th>  
         <td>
-            <b>{{ task.name }}</b><br>
-            {{ task.desciption }}
+            <b>{{ task.name }}</b>
+
         </td>
-    </tr>{% endfor %}  
+        <td>
+            {{ task.description }}
+        </td>
+    </tr>{% endfor %}
   </tbody>
 </table>
+    
+<div class="actions">
+    <a class="btn btn-warning"
+       href={% url 'add_task' %}>
+        <i class="bi bi-plus-square-fill"></i>
+        Nueva tarea
+    </a>
+</div>
 
 {% endblock content %}

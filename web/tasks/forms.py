@@ -31,7 +31,6 @@ class AddTaskForm(BaseForm):
         model = models.Task
         fields = [
             'name',
-            'slug',
             'description',
             ]
         ordered = ('pk',)
