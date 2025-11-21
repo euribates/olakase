@@ -74,16 +74,17 @@ Operación que consiste en aplicar
       </section>
 
       <section data-markdown>
-        ### Preparativos
+        ### Nuestro proyecto
 
-        Vamos a trabajar sobre un proyecto simple, un gestor
-        de tareas, inicialmente con un único modelo, `Task`.
+        - Vamos a trabajar sobre un gestor de tareas muy simple
 
-        Sobre este proyecto, simularemos varios problemas
+        - Tenemos un único modelo, `Task`.
+
+        - Simularemos problemas
         que podemos encontrar en la evolución
         de un proyecto.
 
-        La gente de marketing ha decidido que el nombre 
+        - La gente de marketing ha decidido que el nombre 
         del proyecto sea...
 
       </section>
@@ -105,61 +106,44 @@ Operación que consiste en aplicar
         </section>
 
         <section data-markdown>
-          #### Paso 1: Clonar el repositorio del proyecto
 
-          ```shell
-          git clone https://github.com/euribates/olakase
-          ```
+### Paso 1: Clonar el repositorio del proyecto
 
-        </section>
-
-        <section data-markdown>
-          #### Paso 2: Crear un entorno virtual
-
-          Con uv:
-
-          ```shell
-          uv venv
-          ```
-
-          Si no queremos usar `uv`, podemos usar el módulo `venv`, que
-          está disponible desde la versión 3.3 de Python.
-
-          ```shell
-          python -m venv .venv
-      <section>
-        <h4>tasks.models::Task</h4>
-          <pre><code data-trim data-noescape>
-
-class Task(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    slug = models.SlugField(unique=True)
-    completed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
-
-          </code></pre>
-      </section>
-
-          ```
-
-          Tenemos que acabar teniendo
-          un entorno virtual en la carpeta `.venv`, que podemos
-          activar con `source .venv/bin/activate`.
+```shell
+git clone https://github.com/euribates/olakase
+```
 
         </section>
 
         <section data-markdown>
 
-#### Paso 3: Instalar Django y el resto de dependencias
+### Paso 2: Crear un entorno virtual
 
-Los requerimientos están en el fichero `requirements.txt`.
+Con uv:
 
-De nuevo, podemos hacerlo usando `uv`:
+```shell
+uv venv
+```
+
+Si no queremos usar `uv`, podemos usar el módulo `venv`, que
+está disponible desde la versión 3.3 de Python.
+
+```shell
+python -m venv .venv
+```
+
+Tenemos que acabar teniendo
+un entorno virtual en la carpeta `.venv`, que podemos
+activar con `source .venv/bin/activate`.
+
+        </section>
+
+        <section data-markdown>
+
+### Paso 3: Instalar Django y el resto de dependencias
+
+Los requerimientos están en el fichero
+`requirements.txt`. De nuevo, podemos hacerlo usando `uv`:
 
 ```
 uv pip install -r requirements.txt
@@ -174,7 +158,6 @@ python -m pip install -r requirements.txt
         </section>
 
         <section data-markdown>
-
 
 ### Paso 4: Comprobar que todo está correctamente instalado
 
@@ -208,30 +191,12 @@ Si tenemos `just`, podemos hacer:
 ```shell
 just check
 ```
-      <section>
-        <h4>tasks.models::Task</h4>
-          <pre><code data-trim data-noescape>
 
-class Task(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    slug = models.SlugField(unique=True)
-    completed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
-
-          </code></pre>
-      </section>
-
-          
         </section>
 
         <section data-markdown>
 
-#### Paso 5: Ejecutar migraciones iniciales
+### Paso 5: Ejecutar migraciones iniciales
 
 Si todo ha ido bien,  podemos ejecutar:
 
@@ -239,15 +204,15 @@ Si todo ha ido bien,  podemos ejecutar:
 python manage.py migrate
 ```
 
-Para crear la base de datos y realizar las migraciones iniciales, seguido de:
+Para crear la base de datos y realizar las
+migraciones iniciales, seguido de:
 
 ```shell
 python manage.py loaddata tasks/fixtures/tasks.json
 ```
 
 Para tener en la base de datos algunas tareas con las que podamos jugar.
-
-          
+  
         </section>
 
         <section data-markdown>
@@ -257,6 +222,7 @@ Si usamos `just`, los pasos 3, 4, 5 podemos realizarlos con la orden:
 ```shell
 just startup
 ```
+
         </section>
 
         <section data-markdown>
@@ -281,21 +247,21 @@ just rundev
         </section>
 
         <section data-markdown>
-          #### Todo junto (Usando `uv`)
-          
-          ```shell
-          git clone https://github.com/euribates/olakase
-          cd olakease
-          uv venv
-          source .venv/bin/activate
-          uv pip install -r requirements.txt
-          cd web
-          python manage.py check
-          python manage.py migrate
-          python manage.py loaddata tasks/fixtures/tasks.json
-          python manage.py collectstatic --no-input
-          python manage.py runserver 0.0.0.0:8000
-          ```
+### Todo junto (Usando `uv`)
+
+```shell
+git clone https://github.com/euribates/olakase
+cd olakease
+uv venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
+cd web
+python manage.py check
+python manage.py migrate
+python manage.py loaddata tasks/fixtures/tasks.json
+python manage.py collectstatic --no-input
+python manage.py runserver 0.0.0.0:8000
+```
 
         </section>  
       </section><!-- Fin de vertical column -->
@@ -305,16 +271,16 @@ just rundev
 
           <pre><code data-trim data-noescape>
 
-class Task(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    slug = models.SlugField(unique=True)
-    completed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+          class Task(models.Model):
+              name = models.CharField(max_length=200)
+              description = models.TextField(blank=True)
+              slug = models.SlugField(unique=True)
+              completed = models.BooleanField(default=False)
+              created_at = models.DateTimeField(auto_now_add=True)
+              updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.name
+              def __str__(self):
+                  return self.name
 
           </code></pre>
       </section>
@@ -335,37 +301,54 @@ class Task(models.Model):
 
       </section>
 
-      <section data-markdown>
+      <section>
 
-## Atención, pregunta
-### ¿Como es que tenemos migraciones, si no hemos hecho nada?
+        <h3>Atención, pregunta</h3>
+        <h4>¿Como es que tenemos migraciones, si todavía
+          no hemos hecho nada?</h4>
 
-Una migración es un cambio en la base de datos, en el 
-sentido que refleja las **diferencias** entre lo que
-tenemos en nuestro `models` y la realidad de la base de datos.
+        <p class="fragment fade-in">Una migración es un cambio
+        en la base de datos, es decir, que refleja las
+        <b>diferencias</b> entre lo que tenemos en nuestros modelos
+        y la realidad de la base de datos.</p>
 
       </section>
 
       <section>
-        <h2>¿Qué hace makemigrations?<h2>
+        <p>Cuando realizamos el comando <code>migrate</code> en los
+        pasos anteriores, <b>hay una diferencia</b> entre los modelos
+        y la base de datos.
+        </p>
 
-        <h3>
+        <p class="fragment fade-in">Hay modelos definidos, pero en la
+        base de datos <b>no hay nada</b></p>
+      </section>
+
+      <section>
+        <img src="img/slide-migrate.png" alt=""/>
+      </section>
+
+      <section>
+        <img src="img/slide-makemigrations.png" alt=""/>
+      </section>
+
+
+      <section>
+        <h2>¿Qué hace makemigrations?</h2>
+
+        <p>
         Refleja los cambios entre nuestros modelos y la base de datos
-        </h3>
+        </p>
   
         <h2>
         ¿Cómo lo hace?
         </h2>
 
-        <h3>
+        <p>
         Generando ficheros de migraciones, que son
         ficheros en Python
-        </h3>
+        </p>
 
-      </section>
-
-      <section>
-        <img src="img/slide-makemigrations.png" alt=""/>
       </section>
 
       <section>
@@ -375,19 +358,69 @@ tenemos en nuestro `models` y la realidad de la base de datos.
         a cambiar el esquema de la base de datos?
         </h4>
 
-        <img class="r-stretch" src="img/is-this-magic.jpg" alt="Wait, is this magic?"/>
+        <img class="r-stretch" src="img/is-this-magic.jpg"
+             alt="Wait, is this magic?"/>
       </section>
 
       <section>
-        <h2>sqlmigrate</h2>
-        <pre>
+        <h3>Anatomía de una migración</h3>
+
+        <p>Ejercicio: Ver el contenido del fichero:
+        </p>
+
+        <pre><code data-trim data-noescape>
+        tasks/migrations/0001_initial.py
+        </code></pre>
+      </section>
+
+      <section>
+        <pre><code data-trim data-noescape>
+from django.db import migrations, models
+
+class Migration(migrations.Migration):
+
+    initial = True
+    dependencies = []
+
+    operations = [
+        migrations.CreateModel(
+            name="Task",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200)),
+                ("description", models.TextField(blank=True)),
+                ("slug", models.SlugField(unique=True)),
+                ("completed", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+            ],
+        ),
+    ]
+          </code></pre>
+
+      </section>
+
+      <section>
+        <h3>sqlmigrate</h3>
+
+        <p>Ejercicio: Ejecutar el siguiente comando:</p>
+        <pre><code data-trim data-noescape>
         ./manage.py sqlmigrate tasks 0001
-        </pre>
+        </code></pre>
 
       </section>
 
       <section>
-        <pre>
+        <h3>SQL</h3>
+        <pre><code data-trim data-noescape>
 BEGIN;
 --
 -- Create model Task
@@ -398,7 +431,48 @@ NOT NULL UNIQUE, "completed" bool NOT NULL, "created_at" datetime NOT NULL,
 "updated_at" datetime NOT NULL);
 COMMIT;
         
-        </pre>
+        </code></pre>
+      </section>
+
+      <section>
+        <h3>Más Cosas interesantes que podemos ver<br>
+          <small>en el código de la migración</small>
+        </h3>
+
+        <ul>
+          <li>La migración tiene un campo booleano, <code>initial</code>,
+            que indica que es <b class="fragment highlight-blue">la primera migración
+            creada</b>. Marca el inicio
+            de registro de cambios. Veremos que el resto de las
+            migraciones no tienen este valor.
+          </li>
+
+          <li>Hay un campo de dependencias, <code>dependencies</code>.
+            Como es la primera, es una lista vacía, pero veremos que es la
+            lista de <b class="fragment highlight-blue">dependencias
+            que tienen que haber sido
+            aplicadas antes</b> de poder aplicar esta.
+          </li>
+
+        </ul>
+         <aside class="notes">
+          Nos acercamos al primer ejercicio
+        </aside>
+      </section>
+
+      <section data-background-image="img/noise.png">
+        <img src="img/slide-no-signal.svg" alt=""/>
+      </section>
+
+      <section>
+        <h3>Ejercicio: Añadir un campo</h3>
+
+        <p>Añadir al modelo <code>Task</code> un nuevo campo
+        de que nos sirva para saber que tareas
+        son urgentes. Vamos a llamar a ese campo <code>urgent</code>
+        y lo haremos de tipo booleano.
+        </p>
+
       </section>
 
       <section data-auto-animate>
@@ -422,12 +496,40 @@ class Task(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     slug = models.SlugField(unique=True)
-    urgent = models.BooelanField(default=False)
+    urgent = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
         </code></pre>
+      </section>
+
+      <section>
+        <h3>Paso a paso</h3>
+          <ul>
+            <li>Hacemos el cambio en el fichero <code>models.py</code></li>
+            <li class="fragment">Hagamos un <code>./manage.py check</code>, para prevenir
+            errores</li>
+            <li class="fragment">Verificar la diferencia entre nuestro
+            modelo y la tabla de la base de datos</li>
+          </ul>
+      </section>
+
+      <section>
+        <img class="img-responsive" src="img/not-ok.png"></li>
+      </section>
+
+      <section>
+        <ul>
+          <li>ejecutamos <code>./manage.py makemigrations tasks</code></li>
+          <li class="fragment">ejecutamos <code>./manage.py showmigrations tasks</code></li>
+          <li class="fragment">ejecutamos <code>./manage.py migrate tasks</code></li>
+          <li class="fragment">ejecutamos <code>./manage.py showmigrations tasks</code></li>
+        </ul>
+      </section>
+
+      <section>
+        <img class="img-responsive" src="img/ok.png"></li>
       </section>
 
       <section>
