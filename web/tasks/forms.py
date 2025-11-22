@@ -35,3 +35,20 @@ class AddTaskForm(BaseForm):
             'urgent',
             ]
         ordered = ('pk',)
+
+
+class EditTaskForm(BaseForm):
+    '''Formulario edición de tarea.
+    '''
+
+    class Meta:
+        '''Configuración del formulario.
+        '''
+        model = models.Task
+        fields = [
+            'name',
+            'description',
+            'urgent',
+            'completed',
+            ]
+        ordered = ('pk',)

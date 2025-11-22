@@ -16,7 +16,11 @@
     {% for task in tasks.all %}<tr>
       <th>{{ task.pk }}</th>  
       <td>
-        <b>{{ task.name|as_markdown }}</b>
+        <b>
+            <a href="{% url 'view_task' id_task=task.pk %}">
+            {{ task.name|as_markdown }}
+            </a>
+        </b>
 
       </td>
       <td>

@@ -1,0 +1,30 @@
+{% extends "tasks/base.html" %}
+{% load texts %}
+
+{% block content %}
+  
+<h2>{{ task.name }}</h2>
+
+<div class="task-attributes">
+    
+  <div><b>Creado el</b> {{ task.created_at|as_date }}</div>
+  <div><b>Modificado por última vez el</b> {{ task.updated_at|as_date }}</div>
+  <div><b>¿Es urgente?</b> {{ task.urgent|as_boolean }}</div>
+
+</div>
+
+<div class="task-description">
+
+  {{ task.description|as_markdown }}
+
+</div>
+
+<div class="controls">
+  <a class="btn btn-warning" 
+     href="{% url 'edit_task' id_task=task.pk %}">
+     <i class="bi bi-pencil"></i>
+     Editar
+  </a>   
+</div>
+
+{% endblock content %}

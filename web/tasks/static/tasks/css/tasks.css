@@ -1,0 +1,21 @@
+.task-description {
+  padding-top: 1ex;
+  padding-left: 10%;
+  padding-right: 10%;
+  /*border: 1px solid black;*/
+  }
+
+.task-attributes {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #DCDCDC;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.task-attributes > div {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+
