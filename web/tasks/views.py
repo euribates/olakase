@@ -24,3 +24,8 @@ def add_task(request):
         'title': 'Añadir tarea',
         'form': form, 
         })
+
+
+def view_task(request, id_task: int):
+    from django.http import HttpResponse
+    return HttpResponse("view_task no implementado", content_type="text/plain")
