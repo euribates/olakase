@@ -1,27 +1,30 @@
 {% extends "tasks/base.html" %}
+{% load texts %}
 
 {% block content %}
   
-
 <table class="table">
-    <thead>
-        <tr>
-            <th>Id. Tarea</th>
-            <th>Nombre</th>
-            <th>descripción</th>
-
-        </tr>
-    </thead>  
+  <thead>
+    <tr>
+      <th>Id. Tarea</th>
+      <th>Nombre</th>
+      <th>descripción</th>
+      <th>Urgente</th>
+    </tr>
+  </thead>  
   <tbody>
     {% for task in tasks.all %}<tr>
-        <th>{{ task.pk }}</th>  
-        <td>
-            <b>{{ task.name }}</b>
+      <th>{{ task.pk }}</th>  
+      <td>
+        <b>{{ task.name|as_markdown }}</b>
 
-        </td>
-        <td>
-            {{ task.description }}
-        </td>
+      </td>
+      <td>
+        {{ task.description|as_markdown }}
+      </td>
+      <td>
+        {{ task.urgent|as_boolean }}
+      </td>
     </tr>{% endfor %}
   </tbody>
 </table>

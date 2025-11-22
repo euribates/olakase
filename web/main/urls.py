@@ -11,5 +11,6 @@ def tie(ruta, vista, name=None):
 urlpatterns = [
     tie('', views.homepage),
     tie('nueva/', views.add_task),
+    tie('tarea/<slug:slu', views.add_task),
     path("admin/", admin.site.urls),
 ]
