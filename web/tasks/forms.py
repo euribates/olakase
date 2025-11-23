@@ -32,8 +32,9 @@ class AddTaskForm(BaseForm):
         fields = [
             'name',
             'description',
-            'urgent',
+            'priority',
             ]
+
         ordered = ('pk',)
 
 
@@ -48,7 +49,7 @@ class EditTaskForm(BaseForm):
         fields = [
             'name',
             'description',
-            'urgent',
+            'priority',
             'completed',
             ]
         ordered = ('pk',)

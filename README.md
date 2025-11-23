@@ -163,8 +163,10 @@ hacer migraciones personalizadas que usen código Python e incluso, con
 ciertas limitaciones, nuestro código ya existente.
 
 Para ello, en vez de usar la clase `RunSQL` usaremos la clase
-`RunPython`. Esta clase espera un _callable_, normalmente una función.
-Esta función debe aceptar dos parámetros: el primero es un registro que
+`RunPython`. Esta clase espera uno o dos parámetros, igual que `RunSQL`,
+pero estos parámetros deben ser _callables_, normalmente funciones.
+
+Estas funciones debe aceptar dos parámetros: el primero es un registro que
 mantiene los versiones a lo largo de la historia de todos los modelos,
 de forma que podamos acceder al modelo tal y como era en la evolución
 del proyecto. El segundo parámetro es una instancia de a clase

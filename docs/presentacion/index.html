@@ -267,21 +267,19 @@ python manage.py runserver 0.0.0.0:8000
       </section><!-- Fin de vertical column -->
 
       <section>
-        <h4>tasks.models::Task</h4>
-
+        <h3>tasks.models::Task</h3>
           <pre><code data-trim data-noescape>
 
-          class Task(models.Model):
-              name = models.CharField(max_length=200)
-              description = models.TextField(blank=True)
-              slug = models.SlugField(unique=True)
-              completed = models.BooleanField(default=False)
-              created_at = models.DateTimeField(auto_now_add=True)
-              updated_at = models.DateTimeField(auto_now=True)
+class Task(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    slug = models.SlugField(unique=True)
+    completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-              def __str__(self):
-                  return self.name
-
+    def __str__(self):
+        return self.name
           </code></pre>
       </section>
 
@@ -627,21 +625,26 @@ serie de niveles, descritos en la siguiente tabla:
       <section>
         <h3><i>Baby Steps</i></h3>
         
-       <p>Lo mejor es que las migraciones sean 
-       <b data-fragment-index="1" class="fragment highlight-blue">lo más sencillas
-       posibles</b>.<p>
+        <ul>
+          
+        <li data-fragment-index="4" class="fragment shrink">Lo mejor es
+          que las migraciones sean 
+          <b data-fragment-index="1" class="fragment highlight-blue">lo más sencillas
+          posibles</b>.</li>
 
-       <p>Lo ideal es que cada migración sea
-       responsable de hacer <b data-fragment-index="2" class="fragment highlight-blue">una
-       única cosa</b></p>
+        <li data-fragment-index="4" class="fragment shrink">
+          Cada migración debe ser responsable de hacer
+          <b data-fragment-index="2" class="fragment highlight-blue">una
+          única cosa</b></li>
 
-       <p>Es mejor
-       tener <b data-fragment-index="3" class="fragment highlight-blue">10 migraciones sencillas que 
-       una compleja</b> que realice 10 cambios</p>
+        <li data-fragment-index="4" class="fragment shrink">Es mejor
+          tener <b data-fragment-index="3" class="fragment highlight-blue">10
+          migraciones sencillas que una compleja que realice 10 cambios</b></li>
 
-       <p data-fragment-index="4" class="fragment grow">Esta es la
-         <b data-fragment-index="4" class="fragment highlight-blue">idea
-         más importante</b> de esta charla</p>
+        <li data-fragment-index="4" class="fragment fade-up">Esta es la
+          <b data-fragment-index="4" class="fragment highlight-blue">idea
+          más importante</b> de esta charla</li>
+        </ul>
       </section>
 
       <section>
@@ -667,7 +670,7 @@ serie de niveles, descritos en la siguiente tabla:
           <li>Crear un nuevo modelo <code>Priority</code>, con las
             categorías definidas antes</li>
 
-          <li>Crear un <code>ForetignKey</code>
+          <li>Crear una <code>ForeignKey</code>
             desde <code>Task</code>
             a <code>Priority</code></li>
 
@@ -680,25 +683,785 @@ serie de niveles, descritos en la siguiente tabla:
       </section>
 
       <section>
-        <h3>Ejercicio: Crear el modelo Priority</h3>
-        <p>Esto nos lleva una migración</p>
+
+        <section>
+          <h3>Ejercicio: Crear el modelo Priority</h3>
+          <p>Esto nos lleva una migración</p>
+          <ul>
+            <li>Modificamos el fichero <code>models.py</code></li>
+            <li>Esto crea que la base de datos no está soncronizada
+            con los models</li>
+            <li>Lo arreglamos con <code>makemigrations tasks</code>
+            y <code>migrate tasks</code></li>
+          </ul>
+        </section>
+
+
+        <section>
+          <h3><code>models.Priority</code></h3>
+          <pre><code data-trim data-noescape data-line-numbers>
+  class Priority(models.Model):
+      id = models.CharField(max_length=3, primary_key=True)
+      representation = models.CharField(max_length=18)
+      level = models.IntegerField()
+
+      def __str__(self):
+          return self.representation
+          </code></pre>
+          <aside class="notes">
+            Explicar por qué creamos <code>id</code>
+            manualmente
+          </aside>
+        </section>  
+
+        <section>
+          <h3>¿Por qué se define el campo <code>id</code>?</h3> 
+          
+          <p>Se crea el <code>id</code> manualmente porque no
+            queremos un entero. Preferimos claves
+            alfabéticas fáciles de interpretar en la base
+            de datos.<p>
+
+          <ul>
+            <li class="fragment">Recomendación <b class="fragment highlight-blue">totalmente 
+                subjetiva</b></li>
+            <li class="fragment">Aspectos positivos: Hay que pensar antes de añadir un
+              nuevo nivel de prioridad</li>
+            <li class="fragment"> Aspectos negativos: Hay que pensar antes de añadir un
+              nuevo nivel de prioridad</li>
+          </ul>
+          <aside class="notes">Enpiezan slides verticales</aside>
+
+        </section>
+
+        <section>
+          <h3>Pero la tabla está vacía</h3>
+          <ul>
+            
+          <li>La migración ha creado la tabla, pero no contiene
+          datos, obviamente</li>
+          <li>Podríamos ir ahora al admin y crearlos a mano, pero hay
+          una opción mejor ...</li>
+          <li class="fragment">... Hacer una migración manual</li>
+          </ul>
+        </section>
+
+
+      </section>  
+
+      <section>
+        <h3>Migraciones manuales</h3>
+
         <ul>
-          <li>Modificamos el fichero <code>models.py</code></li>
-          <li>Esto crea que la base de datos no está soncronizada
-          con los models</li>
-          <li>Lo arreglamos con <code>makemigrations tasks</code>
-          y <code>migrate tasks</code></li>
+          
+        <li>Hasta el momento, solo hemos usado migraciones automáticas,
+        creadas por el propio sistema de migraciones de Django</li>
+
+        <li>Pero podemos <b class="fragment highlight-blue">crear nuestras propias
+        migraciones</b></li>
+
         </ul>
       </section>
 
       <section>
-        <h2>Gracias por su atención</h2>
+        <h3>Tipos de migraciones manuales</h3>
+        <p>Hay dos tipos</p>
+        <dl>
+          <dt class="fragment">Migraciones basadas en SQL</dt>
+          <dd class="fragment">Pueden hacer cualquier cosa
+            que se pueda hacer con SQL</dd>
+          <dt class="fragment">Migraciones basadas en Python</dt>
+          <dd class="fragment">Pueden hacer cualquier cosa
+            que se pueda hacer con Python</dd>
+        </dl>
+        </ul>
+      </section>
+
+      <section>
+
+        <h3>Migraciones propias basadas en SQL</h3>
         
-        <p>Preguntas, críticas, sugerencias, ideas, etc.<br>
-        son todas bienvenidas
+        <p>Estas son las más sencillas, así que las veremos
+        primero</p>
+
+        <ul>
+          
+        <li>El primer paso es <b class="fragment highlight-blue">crear
+          una nueva migración, pero manual</b></li>
+
+        <li>La documentación las denomina
+          <b class="fragment highlight-blue">migraciones vacías</b> 
+        (<i>empty</i>)</li>
+
+        <li>Se usa el comando <code>makemigrations</code>
+        pero <b class="fragment highlight-blue">con el <i>flag</i>
+          <samp>--empty</samp></b></li>
+
+        <li>Hay que <b class="fragment highlight-blue">asignarla
+          a una <i>app</i></b></li>  
+
+        <li>Hay que <b class="fragment highlight-blue">darle un
+          nombre</b> (apto como nombre de fichero)</li>
         </p>
 
+        </ul>
       </section>
+
+      <section>
+        <h3>Crear una migración vacia</h3>
+
+          <pre><code data-trim data-noescape>
+./manage.py makemigrations --empty --name priority_fill_in tasks<app>          
+          </code></pre>
+
+        <pre class="fragment"><code data-trim data-noescape>
+Migrations for 'tasks':
+  tasks/migrations/0004_priority_fill_in.py
+        </code></pre>
+
+      </section>
+
+      <section>
+        <h3>La migración vacía está, ejem, vacía</h3>
+        <pre class="fragment"><code data-trim data-noescape>
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ("tasks", "0003_priority_alter_task_options"),
+    ]
+
+    operations = []
+        </code></pre>
+      </section>
+
+     <section data-markdown>
+
+- Como vemos, solo se define el campo de dependencias, las operaciones a
+realizar en esta migración están vacías. Vamos a incluir código SQL para
+crear la secuencia
+
+- Para ello haremos uso de la clase
+[migration.RunSQL](https://docs.djangoproject.com/en/5.2/ref/migration-operations/#runsql),
+que nos permite definir la migración tanto en una dirección como en otra
+
+- Es decir, crearemos este objeto con dos sentencias SQL, una para
+definir como aplicar la migración, y otra, opcional, para deshacerla.
+         
+     </section> 
+
+     <section>
+<h3>RunSQL</h3>
+
+<pre><code data-trim data-noescape class="language-python">
+class RunSQL(sql, reverse_sql=None,
+  state_operations=None,
+  hints=None,
+  elidable=False)
+</code></pre>
+
+<p style="text-align: left; font-style: italic">Allows running of arbitrary SQL on the database [...]
+<code>sql</code>, and <code>reverse_sql</code> if provided, should be strings of SQL
+to run on the database [...]
+</p>
+    <aside class="notes">
+      Explicar porqué puede ser interesante declarar las operaciones
+      en las dos direcciones: Viajar en el tiempo.
+    </aside>
+
+     </section>
+      <section data-auto-animate>
+        <pre data-id="code-priority"><code data-trim data-noescape class="language-python">
+class Migration(migrations.Migration):
+
+    dependencies = [ ("tasks", "0003_priority_alter_task_options") ]
+
+    operations = [ ]
+        </code></pre>
+      </section>
+
+      <section data-auto-animate>
+        <pre data-id="code-priority"><code data-trim data-noescape class="language-python">
+SQL_INSERT_PRIORITIES = (
+  "INSERT INTO tasks_priority (id, representation, level) VALUES "
+  " ('LOW','Baja',-1), ('NOR','Normal',0), ('URG','Urgente',1), ('CRI','Crítica',9);"
+  )
+
+class Migration(migrations.Migration):
+
+    dependencies = [ ("tasks", "0003_priority_alter_task_options") ]
+
+    operations = [ ]
+        </code></pre>
+      </section>
+
+      <section data-auto-animate>
+        <pre data-id="code-priority"><code data-trim data-noescape class="language-python">
+SQL_INSERT_PRIORITIES = (
+  "INSERT INTO tasks_priority (id, representation, level) VALUES "
+  " ('LOW','Baja',-1), ('NOR','Normal',0), ('URG','Urgente',1), ('CRI','Crítica',9);"
+  )
+
+SQL_DELETE_PRIORITIES = "DELETE FROM tasks_priority;"  
+
+class Migration(migrations.Migration):
+
+    dependencies = [ ("tasks", "0003_priority_alter_task_options") ]
+
+    operations = [ ]
+        </code></pre>
+      </section>
+
+      <section data-auto-animate>
+        <pre data-id="code-priority"><code data-trim data-noescape class="language-python">
+SQL_INSERT_PRIORITIES = (
+  "INSERT INTO tasks_priority (id, representation, level) VALUES "
+  " ('LOW','Baja',-1), ('NOR','Normal',0), ('URG','Urgente',1), ('CRI','Crítica',9);"
+  )
+
+SQL_DELETE_PRIORITIES = "DELETE FROM tasks_priority;"  
+
+class Migration(migrations.Migration):
+
+    dependencies = [ ("tasks", "0003_priority_alter_task_options") ]
+
+    operations = [
+        migrations.RunSQL(SQL_INSERT_PRIORITIES, SQL_DELETE_PRIORITIES),
+        ]
+        </code></pre>
+      </section>
+
+      <section>
+        <h3>Al turrón</h3>
+        <p>Apliquemos la migración</p>
+        <ul>
+          <li><code>./manage.py check</code></li>
+          <li><code>./manage.py show_migrations tasks</code></li>
+          <li><code>./manage.py migrate tasks</code></li>
+          <li><code>./manage.py show_migrations tasks</code></li>
+        </ul>
+      </section>  
+    
+      <section>
+        
+        <section>
+          <h3>Ejercicio: Viajar en el tiempo 1/2</h3>
+          <ol>
+            <li>Comprobar que los datos de prioridad están en la base de datos.</li>
+            <li>Viajar en el tiempo hasta antes de aplicar la migración de carga</li>
+            <li>
+              <code>./manage.py migrate tasks 0003</code>
+            </li>
+            <li>Comprobar que los datos de <b class="fragment highlight-blue">NO</b>
+              prioridad están en la base de datos.</li>
+          </ol>
+          <aside class="notes">
+            <p>Puede que no sea la 4, explicar</p>
+            <p>Empiezan slides en vertical</p>
+          </aside>
+        </section>
+
+        <section data-auto-animate>
+          <pre data-id="code-unapply"><code 
+            data-noescape   
+            data-line-numbers
+            class="language-shell">
+  ❯ ./manage.py migrate tasks 0003
+  Operations to perform:
+    Target specific migration: 0003_priority_alter_task_options, from tasks
+  Running migrations:
+    Rendering model states... DONE
+    Unapplying tasks.0004_priority_fill_in... OK
+          </code></pre> 
+        </section>
+      
+        <section data-auto-animate>
+          <pre data-id="code-unapply"><code
+            data-noescape   
+            data-line-numbers="7"
+            class="language-shell">
+  ❯ ./manage.py migrate tasks 0003
+  Operations to perform:
+    Target specific migration: 0003_priority_alter_task_options, from tasks
+  Running migrations:
+    Rendering model states... DONE
+    <b>Unapplying tasks.0004_priority_fill_in... OK</b>
+          </code></pre> 
+        </section>
+
+      <section>
+      <video src="video/dr-who-intro.mp4" data-preview-video></video>  
+      <img src="img/tardis.jpg" alt="The T.A.R.D.I.S."
+        data-preview-video="video/dr-who-intro.mp4">
+      </section>
+
+      <section>
+        <h3>Volvamos al presente</h3>  
+        <ul>
+          <li class="fragment"><code>./manage.py show_migrations tasks</code></li>
+          <li class="fragment"><code>./manage.py migrate tasks</code></li>
+          <li class="fragment"><code>./manage.py show_migrations tasks</code></li>
+          <li class="fragment">Comprobar que los datos de 
+              prioridad vuelven a estar en la base de datos.</li>
+        </ul>
+      </section>  
+    </section>
+
+
+    <section>
+      <h3>Añadir la clave foránea</h3>
+
+    </section>  
+
+    <section data-auto-animate>
+      <pre data-id="code-fk"><code data-trim data-noescape class="language-python">
+class Task(models.Model):
+
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    slug = models.SlugField(unique=True)
+    urgent = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+      </code></pre>
+    </section>
+
+
+    <section data-auto-animate>
+      <pre data-id="code-fk"><code data-trim data-noescape class="language-python">
+class Task(models.Model):
+
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    slug = models.SlugField(unique=True)
+    priority = models.ForeignKey(Priority,
+        default='NOR',
+        related_name='tasks',
+        on_delete=models.PROTECT,
+        )
+    urgent = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+      </code></pre>
+    </section>
+
+    <section>
+      <h3>Hemos hecho un cambio en models.py</h3>
+      
+      <img src="img/not-ok.png" alt="Not ok"/>
+
+    </section>
+    
+     <section>
+       <h3>Crear la migración / aplicar la migración</h3>
+       <ul>
+         <li><code>./manage.py check</code></li>
+         <li class="fragment"><code>./manage.py makemigrations tasks</code></li>
+         <li class="fragment"><code>./manage.py showmigrations tasks</code></li>
+         <li class="fragment"><code>./manage.py migrate tasks</code></li>
+         <li class="fragment"><code>./manage.py showmigrations tasks</code></li>
+       </ul>
+     </section> 
+
+    <section>
+      <h3>Vuelve a haber sincronía entre base de datos y modelos</h3> 
+      <img src="img/ok.png" alt="Ok"/>
+    </section>
+
+    <section>
+      <h3>Quedan dos cosas pendientes ...</h3>
+      <ul>
+
+        <li>Todas las tareas están marcadas con prioridad normal,
+          incluso las que habíamos marcado como urgentes</li>
+
+        <li>Seguimos teniendo el campo <code>urgent</code>, que es
+        redundante con <code>priority</code></li>
+
+      </ul>
+
+      <aside class="notes">Comprobar en la base de datos</aside>
+    </section>
+
+    <section>
+      <h3>Migraciones de datos con Python</h3>
+      <ul>
+        
+        <li>Si las migraciones usando solo SQL se quedan 
+          cortas, podemos hacer migraciones que usen código Python.</li>
+
+        <li>En vez de usar la clase <code>RunSQL</code> 
+          usaremos la clase <code>RunPython</code></li>
+
+      </ul>
+      
+    </section>
+
+    <section>
+      <h3>La clase <code>RunPython</code></h3>
+      <ul>
+        
+        <li>Igual que <code>RunSQL</code> acepta dos parámetros, siendo
+          el segundo opcional</li>
+        
+        <li>A diferencia de <code>RunSQL</code>, estos parámetros deben
+        ser <i>callables</i>; normalmente funciones</li>
+        
+        <li>La primera función es el código que aplica el cambio. El
+        segundo, si se indica, el que deshace el cambio.</li>
+
+      </ul>
+    </section>
+
+    <section>
+      <h3>Uso de los modelos en la migración</h3>
+      <ul>
+
+        <li><b class="fragment highlight-blue">NO</b> podemos usar los
+          modelos libremente</li>
+
+        <li>Esto es así porque la migración, si accede al modelo, debe
+          usar la <b class="fragment highlight-blue">versión del modelo
+          vigente</b> en esa momento.</li>
+
+        <li>Para tratar con eso, las funciones de migración
+          <b class="fragment highlight-blue">deben aceptar
+          dos parámetros</b></li>  
+
+      </ul>
+      
+    </section>
+
+    <section>
+      <h3>Las funciones de migración</h3>
+      <ul>
+        <li>El primer parámetro es un registro que
+          mantiene los versiones a lo largo de la historia
+          de todos los modelos</li>
+
+        <li>Nos permite <b class="fragment highlight-blue">acceder al
+            modelo tal y como era</b> en la evolución del proyecto</li>
+
+        <li>
+          El segundo parámetro es una instancia de la clase
+          <code>SchemaEditor</code>, que se puede usar para
+          realizar cambios manuales en el esquema de la base de datos.
+           <b class="fragment highlight-blue">No es recomendable
+             usarlo</b>.
+        </li>
+      </ul>
+    </section>
+
+
+     <section>
+       <h3>Migración de datos para usar 
+         la información de <code>urgent</code></h3>
+       <h4>Creemos otra migración vacia</h4>
+
+      <pre><code data-trim data-noescape class="language-bash">
+./manage.py makemigrations --empty --name set_priority_from_urgent tasks
+      </code></pre>
+
+      <pre class="fragment"><code data-trim data-noescape class="language-bash">
+Migrations for 'tasks':
+  tasks/migrations/0006_set_priority_from_urgent.py
+      </code></pre>
+
+
+     </section>
+
+     <section>
+       <h3>La clase esta vacía, claro </h3>
+      <pre><code data-trim data-noescape class="language-python">
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ("tasks", "0005_task_priority"),
+    ]
+
+    operations = []      
+      </code></pre>
+     </section>
+
+    <section>
+      <h3>La función de ida</h3>
+      <ul>
+        <li>Vamos a crear la función que aplica los cambios</li>
+        <li>Seleccionamos todas las tareas urgentes, y les cambiamos
+        la prioridad</li>
+        <li>Esto se podría haber hecho también con una migracion
+        con SQL puro, si</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>set_priority</h3>
+      <pre><code data-trim data-noescape class="language-python">
+def set_priority(apps, schema_editor):
+    # No podemos usar Task directamente, porque puede
+    # que a estas alturas exista una versión posterior a la
+    # que espera la migración. Por eso tenemos que viajar en el tiempo
+    # y cargar el modelo que se corresponda con el momento histórico
+    Task = apps.get_model("tasks", "Task")
+    for task in Task.objects.filter(urgent=True):
+        task.priority_id = 'URG'
+        task.save()
+      </code></pre>
+    </section>
+      
+    <section>
+      <h3>undo_set_priority</h3>
+      <pre><code data-trim data-noescape class="language-python">
+def undo_set_priority(apps, schema_editor):
+    Task = apps.get_model("tasks", "Task")  # Lo mismo
+    for task in Task.objects.exclude(priority='NOR'):
+        task.priority_id = 'NOR'
+        task.save()
+      </code></pre>
+    </section>
+
+    <section>
+      <h3>La migración queda así:</h3>
+      <pre><code data-trim data-noescape class="language-python">
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ("tasks", "0005_task_priority"),
+    ]
+
+    operations = [
+        migrations.RunPython(set_priority, undo_set_priority),
+        ]
+      </code></pre>
+    </section>
+    
+    <section>
+      <h3>El código completo</h3>
+      <pre><code data-trim data-noescape class="language-python">
+from django.db import migrations
+
+def set_priority(apps, schema_editor):
+    # No podemos usar Task directamente, porque puede
+    # que a estas alturas exista una versión posterior a la
+    # que espera la migración. Por eso tenemos que viajar en el tiempo
+    # y cargar el modelo que se corresponda con el momento histórico
+    Task = apps.get_model("tasks", "Task")
+    for task in Task.objects.filter(urgent=True):
+        task.priority_id = 'URG'
+        task.save()
+
+
+def undo_set_priority(apps, schema_editor):
+    Task = apps.get_model("tasks", "Task")  # Lo mismo
+    for task in Task.objects.exclude(priority='NOR'):
+        task.priority_id = 'NOR'
+        task.save()
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ("tasks", "0005_task_priority"),
+    ]
+
+    operations = [
+        migrations.RunPython(set_priority, undo_set_priority),
+        ]
+      </code></pre>
+      <aside class="notes">Deberíamos usar transacciones, claro, pero
+      por sencillez lo dejamos así.</aside>
+
+    </section>
+
+    <section>
+      <h3>Queda solo el último paso</h3>
+<div class="r-stack">
+  <img
+    src="img/ok.png"
+    width="150" height="150"
+  />
+  <img data-fragment-index="1"
+    class="fragment"
+    src="img/not-ok.png"
+    width="150" height="150"
+  />
+  <img data-fragment-index="5"
+    class="fragment"
+    src="img/ok.png"
+    width="150" height="150"
+  />
+</div> 
+      <ul>
+        <li>Eliminar el campo <code>urgent</code></li>
+        <li class="fragment" data-fragment-index="1">Solo hay que borrar el campo del modelo</li>
+        <li class="fragment" data-fragment-index="2">Esto provoca una discrepancia modelos/base de datos</li>
+        <li class="fragment" data-fragment-index="3">aplicamos <code>makemigrations</code></li>
+        <li class="fragment" data-fragment-index="4">aplicamos <code>migrate</code></li>
+        <li class="fragment" data-fragment-index="5">Todo ok</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>La migración final</h3>
+      <pre><code data-trim data-noescape class="language-python">
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ("tasks", "0006_set_priority_from_urgent"),
+    ]
+
+    operations = [
+        migrations.AlterModelOptions(
+            name="task",
+            options={"ordering": ["-priority__level"]},
+        ),
+        migrations.RemoveField(
+            model_name="task",
+            name="urgent",
+        ),
+    ]
+      </code></pre>
+
+    </section>
+
+    <section>
+      <h3>Recomendación importante<br>
+        <small>Para las migraciones con Python</small>
+      </h3>
+
+      <ul>
+
+        <li>Mejor <b class="fragment highlight-blue">no usar
+            ninguno de los métodos</b> definidos  por nosotros
+            </li>
+
+        <li>No hay garantía de que esos 
+          métodos <b class="fragment highlight-blue">estén definidos</b>
+          en el momento de la migración</li>
+
+        <li>O, si están definidos, que
+          <b class="fragment highlight-blue">funcionen de la forma
+          esperada</b></li>
+
+      </ul>
+      
+    </section>
+
+    <section>
+      
+      <h3>Cosas que hemos aprendido hasta ahora</h3>
+
+      <ul>
+        
+        <li>Las migraciones deben realizarse con pasos cortos (<i>baby
+            steps</i>)</li>
+
+        <li class="fragment">Podemos hacer migraciones manuales, usando
+          SQL o Python</li>
+
+        <li class="fragment">Podemos <i>viajar en el tiempo</i> con las
+          migraciones</li>
+        
+        <li class="fragment">Las migraciones manuales pueden (¿deben?)
+        definir como hacer el cambio y como deshacerlo
+        </li>
+
+        <li class="fragment">Para las migraciones automáticas, no hay
+          que hacer nada.</li>
+
+        <li class="fragment">SQL es muy potente,
+          pero si se quedan corto, <span class="fragment">... con
+            Python se puede hacer casi todo.</span> </li>
+      </ul> 
+      <aside class="notes">Pero no uses los métodos de la clase</aside>
+    </section>
+
+
+    <section>
+      
+      <section>
+        <h3>Ejercicio (Si hay tiempo)</h3>
+      </section>
+
+      <section>
+        <h3>Añadir un campo <code>due_date</code><br>
+          <small>Con la fecha  en la que debería estar
+            terminada la tarea</small>
+        </h3>
+        <h4>Condiciones:</h4>
+        <ul>
+          <li>El campo no puede ser nulo</li>
+          <li>Existe un librería de I.A. que nos permite estimar
+          la fecha de terminación a partir de la descripción de la
+          tarea.</li>
+          <li>(Simularemos este sistema con un valor al azar
+            entre 1 y 21 días en el futuro)</li>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Problema</h3>
+          <h4>
+            Si definimos el campo como no nulo,<br>
+            la migración fallará,<br>
+            porque tenemos en la base de datos<br>
+            registros que tendrán ese campo a nulo.
+          </h4>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Una posible solución</h3>
+        <ul>
+          <li>Definir el campo <code>due_date</code>, de tipo
+            fecha, pero con la posibilidad de ser nulo.
+          </li>
+          <li>Crear la migación y aplicarla, no debería dar
+            problema.
+          </li>
+          <li>Crear una migración manual, con Python, que use
+            la librería anterior para estimar y asignar una
+            fecha de entrega. Aplicarla.
+          </li>
+          <li>Ahora todos los registros tienen una fecha de entrega.
+            Redefinir el campo para que no acepte nulos. Crear la
+            migración y aplicar.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Aun más complicado</h3>
+        <ul>
+          <li>Hay que asegurarse de que las dos aplicaciones, la
+            manual, que asigna las fechas y la siguiente, que redefine
+            el campo para que no pueda ser manual, se aplique una
+            inmediatamente después de la otra.
+          </li>
+          <li>La operación de la I.A. puede ser muy costosa
+            computacionalmente. Supón que toma 15 minutos
+          de media evaluar cada tarea.</li>
+          <li>Hay un momento critico entra</li>
+          <li>¿Como podriamos solucionar estos problemas?</li>
+        </ul>
+      </section>
+
+
+    </section>
+
+
+     <section>
+       <h2>Gracias por su atención</h2>
+        
+       <h4>Juan Ignacio Rodríguez de León</h4>
+       <p>euribates@gmail.com</p>
+
+      <p>Preguntas, críticas, sugerencias, ideas, etc.<br>
+        son todas bienvenidas
+      </p>
+
+     </section>
       
       
       
