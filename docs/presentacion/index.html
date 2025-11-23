@@ -121,25 +121,29 @@ Operación que consiste en aplicar
         - Ejecutar migraciones iniciales
         </section>
 
-        <section data-markdown>
+        <section>
 
-### Paso 1: Clonar el repositorio del proyecto
+          <h3>Paso 1: Clonar el repositorio del proyecto</h3>
 
-```shell
+          <pre><code data-trim data-noescape class="language-bash">
 git clone https://github.com/euribates/olakase
-```
+          </code></pre>
 
-Para poder empezar de cero, vamos a cambiar a una rama
-llamada <code>initial</code>
+          <p>Para poder empezar de cero, vamos a cambiar a una rama
+          llamada <code>initial</code></p>
 
-```shell
+          <pre><code data-trim data-noescape class="language-bash">
 git fetch --all
 git switch initial
-```
+          </code></pre>
 
-<aside class="notes">Podemos crear una rama por alumno, si quieren
-  <code>git switch -c <branchname></code>
-</aside>
+          <aside class="notes">
+            <p>Podemos crear una rama por alumno, si quieren
+            <code>git switch -c <branchname></code></p>
+
+            <p>También comentar el contenido del directorio migrations
+            en una rama y en la otra</p>
+          </aside>
 
 
 
@@ -298,7 +302,7 @@ python manage.py runserver 0.0.0.0:8000
 
       <section>
         <h3>tasks.models::Task</h3>
-          <pre><code data-trim data-noescape>
+      <pre><code data-trim data-noescape class="language-python">
 
 class Task(models.Model):
     name = models.CharField(max_length=200)
@@ -402,7 +406,7 @@ class Task(models.Model):
       </section>
 
       <section>
-        <pre><code data-trim data-noescape>
+      <pre><code data-trim data-noescape class="language-python">
 from django.db import migrations, models
 
 class Migration(migrations.Migration):
@@ -492,6 +496,11 @@ COMMIT;
         <img src="img/slide-no-signal.svg" alt=""/>
       </section>
 
+      <section data-background-image="img/boss.jpg">
+        <img class="fragment fade-out"
+             src="img/slide-no-signal.svg" alt="No signal!"/>
+      </section>
+
       <section>
         <h3>Ejercicio: Añadir un campo</h3>
 
@@ -558,6 +567,12 @@ class Task(models.Model):
 
       <section>
         <img class="img-responsive" src="img/ok.png"></li>
+        <aside class="notes">
+          Comprobar en la base de datos que se ha producido
+          el cambio. Cambiar algunas tareas
+          para que sean urgentes
+        </aside>
+        </aside>
       </section>
 
       <section>
@@ -622,9 +637,11 @@ class Migration(migrations.Migration):
             </li>
         </ul>
 
+
       </section>  
 
       <section data-background-image="img/carta-ajuste-rtve.png">
+        <img src="img/slide-no-signal.svg" alt="No signal!"/>
       </section>
 
       <section data-background-image="img/boss.jpg">
@@ -687,9 +704,15 @@ serie de niveles, descritos en la siguiente tabla:
             <code>normal</code> y <code>critic</code>, esto nos permite tener
             estados imposibles.</li>
 
-          <li>Necesitamos un nuevo campo de priridad, y hay que librarse del
+          <li>Necesitamos un nuevo campo de prioridad, y hay que librarse del
           antiguo campo <code>urgent</code></li>
         </ul>
+        <aside class="notes">
+          Hay una charla magnifica sobre estados imposibles
+          en la PyConES 2025 de Sevilla, dada por una persona
+          extraordinariamente atractiva y elegante. Estén atentos cuando
+          salgan los vídeos.
+        </aside>
       </section>
 
       <section>
@@ -724,6 +747,7 @@ serie de niveles, descritos en la siguiente tabla:
             <li>Lo arreglamos con <code>makemigrations tasks</code>
             y <code>migrate tasks</code></li>
           </ul>
+          <aside class="notes">Slides verticales</aside>
         </section>
 
 
@@ -738,44 +762,42 @@ serie de niveles, descritos en la siguiente tabla:
       def __str__(self):
           return self.representation
           </code></pre>
-          <aside class="notes">
-            Explicar por qué creamos <code>id</code>
-            manualmente
-          </aside>
         </section>  
 
         <section>
           <h3>¿Por qué se define el campo <code>id</code>?</h3> 
           
-          <p>Se crea el <code>id</code> manualmente porque no
-            queremos un entero. Preferimos claves
-            alfabéticas fáciles de interpretar en la base
-            de datos.<p>
+          <h4>Se crea el <code>id</code> manualmente porque no
+            queremos un entero</h4>
 
           <ul>
-            <li class="fragment">Recomendación <b class="fragment highlight-blue">totalmente 
-                subjetiva</b></li>
-            <li class="fragment">Aspectos positivos: Hay que pensar antes de añadir un
-              nuevo nivel de prioridad</li>
-            <li class="fragment"> Aspectos negativos: Hay que pensar antes de añadir un
-              nuevo nivel de prioridad</li>
+
+            <li>En este caso, referimos claves alfabéticas fáciles de interpretar en la base de datos.</li>
+
+            <li>Recomendación totalmente subjetiva</li>
+            <li>Aspectos positivos: Hay que pensar antes de añadir un nuevo nivel de prioridad</li>
+            <li>Aspectos negativos: Hay que pensar antes de añadir un nuevo nivel de prioridad</li>
           </ul>
-          <aside class="notes">Enpiezan slides verticales</aside>
 
         </section>
 
         <section>
           <h3>Pero la tabla está vacía</h3>
+        </section>
+
+        <section>
+          
           <ul>
             
           <li>La migración ha creado la tabla, pero no contiene
           datos, obviamente</li>
+          
           <li>Podríamos ir ahora al admin y crearlos a mano, pero hay
-          una opción mejor ...</li>
-          <li class="fragment">... Hacer una migración manual</li>
+            una opción mejor: Hacer una migración manual
+          </li>
+
           </ul>
         </section>
-
 
       </section>  
 
