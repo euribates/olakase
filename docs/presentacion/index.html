@@ -533,6 +533,165 @@ class Task(models.Model):
       </section>
 
       <section>
+        <h3>¿Cómo sabe Django<br>
+          <small>qué migraciones ha aplicado?</small>
+        </h3>
+        <ul>
+          <li>Almacena la información en la BD, en la tabla
+            <code>django_migrations</code>
+          </li>
+          <li class="fragment">Esta tabla tiene cuatro campos:
+            <ul>
+              <li class="fragment"><code>id</code>: clave primaria</li>
+              <li class="fragment"><code>app</code>: Identificador de la app</li>
+              <li class="fragment"><code>name</code>: Nombre o descripción de la migración</li>
+              <li class="fragment"><code>applied</code>: Si ha sido aplicada (en esta base de datos)</li>
+            </ul>
+          </li>  
+        </ul>
+      </section>
+
+      <section>
+        <h3>La tabla django_migrations</h3>
+        <img src="img/django_migrations.png"
+             class="img-responsive"
+             alt="Tabla de migraciones"/>  
+      </section>
+
+      <section>
+        <pre><code data-trim data-noescape data-line-numbers>
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ("tasks", "0001_initial"),
+    ]
+
+    operations = [
+        migrations.AddField(
+            model_name="task",
+            name="urgent",
+            field=models.BooleanField(default=False),
+        ),
+    ]
+        </code></pre>
+      </section>  
+
+      <section>
+        <h3>Cosas que hemos aprendido hasta ahora</h3>
+
+        <ul>
+          
+          <li>Podemos hacer migraciones de forma automática</li>
+
+          <li class="fragment">No hay (mucha) magia, solo son ficheros
+            creados automáticamente</li>
+
+          <li class="fragment">Las migraciones forman una una lista
+            encadenada, que definen dependencias.</li>
+
+          <li class="fragment">El estado de aplicación de las migraciones
+            se almacena en la propia base de datos.
+            </li>
+        </ul>
+
+      </section>  
+
+      <section data-background-image="img/carta-ajuste-rtve.png">
+      </section>
+
+      <section data-background-image="img/boss.jpg">
+        <img class="fragment fade-out"
+             src="img/slide-no-signal.svg" alt="No signal!"/>
+      </section>
+
+      <section data-markdown>
+        
+Sustituir el campo booleano `urgent` por un campo `priority`, con una
+serie de niveles, descritos en la siguiente tabla:
+
+|  Código  |   Descripción     |
+|:--------:|-------------------|
+| `LOW`    | Prioridad baja    |
+| `NOR`    | Prioridad normal  |
+| `URG`    | Prioridad urgente |
+| `CRI`    | Prioridad crítica |
+
+      </section>
+
+      <section>
+        <h3>Antes de saltar sobre el teclado</h3>
+        <h4>Vamos a pensar cómo lo hacemos</h4>
+        <h5 class="fragment">¿Ideas?</h5>
+      </section>
+
+      <section>
+        <h3><i>Baby Steps</i></h3>
+        
+       <p>Lo mejor es que las migraciones sean 
+       <b data-fragment-index="1" class="fragment highlight-blue">lo más sencillas
+       posibles</b>.<p>
+
+       <p>Lo ideal es que cada migración sea
+       responsable de hacer <b data-fragment-index="2" class="fragment highlight-blue">una
+       única cosa</b></p>
+
+       <p>Es mejor
+       tener <b data-fragment-index="3" class="fragment highlight-blue">10 migraciones sencillas que 
+       una compleja</b> que realice 10 cambios</p>
+
+       <p data-fragment-index="4" class="fragment grow">Esta es la
+         <b data-fragment-index="4" class="fragment highlight-blue">idea
+         más importante</b> de esta charla</p>
+      </section>
+
+      <section>
+        <h3>Brainstorm</h3>
+        <ul>
+          <li>No queremos perder la información que ya está 
+            en el campo <code>urgent</code></li>
+
+          <li>No podemos crear otros tres campos booleanos, <code>low_priotity</code>,
+            <code>normal</code> y <code>critic</code>, esto nos permite tener
+            estados imposibles.</li>
+
+          <li>Necesitamos un nuevo campo de priridad, y hay que librarse del
+          antiguo campo <code>urgent</code></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Tareas</h3>
+
+        <ul>
+
+          <li>Crear un nuevo modelo <code>Priority</code>, con las
+            categorías definidas antes</li>
+
+          <li>Crear un <code>ForetignKey</code>
+            desde <code>Task</code>
+            a <code>Priority</code></li>
+
+          <li>Actualizar la prioridad teniendo en cuenta el antiguo
+          campo <code>urgent</code></li>
+
+          <li>Eliminar el campo <code>urgent</code></li>
+
+        </ul>
+      </section>
+
+      <section>
+        <h3>Ejercicio: Crear el modelo Priority</h3>
+        <p>Esto nos lleva una migración</p>
+        <ul>
+          <li>Modificamos el fichero <code>models.py</code></li>
+          <li>Esto crea que la base de datos no está soncronizada
+          con los models</li>
+          <li>Lo arreglamos con <code>makemigrations tasks</code>
+          y <code>migrate tasks</code></li>
+        </ul>
+      </section>
+
+      <section>
         <h2>Gracias por su atención</h2>
         
         <p>Preguntas, críticas, sugerencias, ideas, etc.<br>

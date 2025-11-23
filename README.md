@@ -57,12 +57,12 @@ para la enseñanza de Django.
 - Sustituir el campo booleano `urgent` por un campo `priority`, con una
   serie de niveles, descritos en la siguiente tabla:
 
-    |  Código  |   Descripción    |
-    |:--------:|------------------|
-    | `LOW`    | Prioridad baja   |
-    | `NOR`    | Prioidad normal  |
-    | `URG`    | Prioidad urgente |
-    | `CRI`    | Prioidad crítica |
+    |  Código  |   Descripción     |
+    |:--------:|-------------------|
+    | `LOW`    | Prioridad baja    |
+    | `NOR`    | Prioridad normal  |
+    | `URG`    | Prioridad urgente |
+    | `CRI`    | Prioridad crítica |
 
     - Mejor varias migraciones sencillas que una compleja:
 
