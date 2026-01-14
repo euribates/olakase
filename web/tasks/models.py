@@ -33,6 +33,9 @@ class Task(models.Model):
         default='NOR',
         related_name='tasks',
         on_delete=models.PROTECT,
+    due_date = models.DateTimeField(
+        blank=True,
+        null=True,
         )
     completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
